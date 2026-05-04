@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center mb-4">Our Trainings</h1>
+<div class="row">
+    {% for course in courses %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ course.name }}</h5>
+                <p class="card-text">{{ course.desc }}</p>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#enrollModal" data-course="{{ course.name }}">Enroll Now</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Enrollment Modal -->
+<div class="modal fade" id="enrollModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Enroll in Course</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <input type="hidden" id="course" name="course">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Enroll</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var enrollModal = document.getElementById('enrollModal');
+    enrollModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget;
+        var course = button.getAttribute('data-course');
+        var modalCourseInput = enrollModal.querySelector('#course');
+        modalCourseInput.value = course;
+    });
+});
+</script>
+{% endblock %}
